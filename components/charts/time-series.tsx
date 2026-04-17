@@ -42,13 +42,14 @@ export function TimeSeriesChart({
         const dateOffset = i + 1;
         const futureDate = `+${dateOffset}`;
         
-        result.push({
+        const item: { date: string; value: number; isForecast?: boolean; upper?: number; lower?: number } = {
           date: futureDate,
           value: forecast.predictions[i],
-          forecast: true,
+          isForecast: true,
           upper: showConfidence ? forecast.upper_bound[i] : undefined,
           lower: showConfidence ? forecast.lower_bound[i] : undefined
-        });
+        };
+        result.push(item);
       }
     }
     
