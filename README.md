@@ -1,36 +1,140 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# InsightFlow - AI-Powered Analytics Dashboard
 
-## Getting Started
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js" alt="Next.js">
+  <img src="https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Tailwind-4.0-38bdf8?style=for-the-badge&logo=tailwind-css" alt="Tailwind">
+  <img src="https://img.shields.io/badge/Recharts-3.8-orange?style=for-the-badge" alt="Recharts">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
+</p>
 
-First, run the development server:
+<p align="center">
+  A production-grade AI analytics dashboard with real-time forecasting algorithms, synthetic data generation, and interactive visualizations.
+</p>
+
+---
+
+## Features
+
+### Forecasting Engine
+- **Holt-Winters Exponential Smoothing** - Best for seasonal data with trend
+- **Linear Regression** - Polynomial features with engineered attributes
+- **Weighted Moving Average** - Simple but effective smoothing
+- **Ensemble Model** - Weighted combination of all algorithms
+
+### Metrics & Visualization
+- RMSE, MAE, and MAPE performance metrics
+- Confidence intervals (80%, 95%)
+- Interactive time-series charts with zoom/pan
+- Anomaly detection with visual highlighting
+
+### Data Capabilities
+- Built-in synthetic data generator
+- Configurable seasonality, trend, and noise
+- CSV export functionality
+- Data aggregation (daily/weekly/monthly)
+
+---
+
+## Quick Start
 
 ```bash
+# Clone and navigate
+cd insightflow
+
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the dashboard.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+insightflow/
+├── app/
+│   ├── layout.tsx          # Root layout with dark mode
+│   ├── page.tsx            # Main dashboard page
+│   └── globals.css         # Global styles
+├── components/
+│   ├── ui/                 # Card, Button components
+│   ├── charts/             # TimeSeriesChart
+│   ├── forecast/           # ForecastPanel
+│   └── dashboard/         # KPICard, Sidebar
+├── lib/
+│   ├── algorithms/         # ML algorithms
+│   │   ├── forecast.ts    # Main forecasting module
+│   │   ├── exponential-smoothing.ts
+│   │   ├── linear-regression.ts
+│   │   └── moving-average.ts
+│   ├── data/               # Data generation
+│   │   └── generator.ts
+│   └── store.ts            # Zustand state management
+├── types/
+│   └── index.ts            # TypeScript definitions
+└── package.json
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Category | Technology |
+|----------|------------|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript (strict) |
+| Styling | Tailwind CSS v4 |
+| Charts | Recharts |
+| Animation | Framer Motion |
+| State | Zustand |
+| Icons | Lucide React |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Available Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
+
+---
+
+## Key Algorithms
+
+### Exponential Smoothing (Holt-Winters)
+Implements triple exponential smoothing with:
+- Level, trend, and seasonal components
+- Automatic seasonality detection
+- Optimized alpha, beta, gamma parameters
+
+### Linear Regression
+Feature-rich polynomial regression:
+- Time-based features (day, month cycles)
+- Lag features (7-day, 30-day)
+- Rolling statistics (moving averages)
+
+### Moving Average
+Weighted moving average with:
+- Exponential smoothing option
+- Seasonality factor calculation
+- Trend detection
+
+---
+
+## License
+
+MIT License - feel free to use for personal and commercial projects.
+
+---
+
+## Acknowledgments
+
+Built with inspiration from [Tremor](https://tremor.so) and [Recharts](https://recharts.org) patterns for dashboard design.
