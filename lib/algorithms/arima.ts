@@ -111,7 +111,11 @@ function estimateARCoefs(data: number[], p: number): number[] {
   for (let lag = 0; lag <= p; lag++) {
     let sum = 0;
     for (let i = 0; i < n - lag; i++) {
-      sum += (data[i] - mean) * (data[i + lag] - mean);
+      const curr = data[i];
+      const next = data[i + lag];
+      if (curr !== undefined && next !== undefined) {
+        sum += (curr - mean) * (next - mean);
+      }
     }
     acf.push(sum / n);
   }
@@ -122,7 +126,8 @@ function estimateARCoefs(data: number[], p: number): number[] {
   for (let i = 0; i < p; i++) {
     const row: number[] = [];
     for (let j = 0; j < p; j++) {
-      row.push(gamma[Math.abs(i - j)]);
+      const gammaVal = gamma[Math.abs(i - j)];
+      row.push(gammaVal !== undefined ? gammaVal : 0);
     }
     gammaMatrix.push(row);
   }
