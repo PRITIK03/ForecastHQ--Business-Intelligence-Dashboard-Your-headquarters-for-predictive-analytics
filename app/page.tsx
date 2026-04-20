@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/dashboard/sidebar';
 import { KPICard } from '@/components/dashboard/kpi-card';
 import { ForecastPanel } from '@/components/forecast/panel';
 import { TimeSeriesChart } from '@/components/charts/time-series';
+import { MicroBarChart } from '@/components/charts/micro-bar-chart';
 import { Card } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
@@ -43,27 +44,34 @@ export default function Dashboard() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <KPICard 
-              title="Total Revenue" 
-              value={metrics.total} 
+            <KPICard
+              title="Total Revenue"
+              value={metrics.total}
               prefix="$"
               change={metrics.growth}
+              data={data}
             />
-            <KPICard 
-              title="Avg. Daily" 
-              value={metrics.average} 
+            <KPICard
+              title="Avg. Daily"
+              value={metrics.average}
               prefix="$"
+              data={data}
+              chartColor="#10b981"
             />
-            <KPICard 
-              title="Peak Value" 
-              value={metrics.max} 
+            <KPICard
+              title="Peak Value"
+              value={metrics.max}
               prefix="$"
+              data={data}
+              chartColor="#f59e0b"
             />
-            <KPICard 
-              title="Growth Trend" 
-              value={metrics.trend} 
+            <KPICard
+              title="Growth Trend"
+              value={metrics.trend}
               prefix={metrics.trend >= 0 ? '+' : ''}
               change={metrics.growth / 10}
+              data={data}
+              chartColor="#8b5cf6"
             />
           </div>
           
@@ -117,33 +125,42 @@ export default function Dashboard() {
                 <div className="w-10 h-10 bg-indigo-600/20 rounded-lg flex items-center justify-center">
                   <Database className="w-5 h-5 text-indigo-400" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <p className="text-xs text-zinc-500">Data Points</p>
                   <p className="text-lg font-medium text-zinc-200">{data.length}</p>
+                  <div className="mt-2">
+                    <MicroBarChart data={data} color="#6366f1" />
+                  </div>
                 </div>
               </div>
             </Card>
-            
+
             <Card className="p-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-violet-600/20 rounded-lg flex items-center justify-center">
                   <Clock className="w-5 h-5 text-violet-400" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <p className="text-xs text-zinc-500">Time Range</p>
                   <p className="text-lg font-medium text-zinc-200">365 days</p>
+                  <div className="mt-2">
+                    <MicroBarChart data={data} color="#8b5cf6" />
+                  </div>
                 </div>
               </div>
             </Card>
-            
+
             <Card className="p-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-emerald-600/20 rounded-lg flex items-center justify-center">
                   <DollarSign className="w-5 h-5 text-emerald-400" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <p className="text-xs text-zinc-500">Confidence</p>
                   <p className="text-lg font-medium text-zinc-200">95%</p>
+                  <div className="mt-2">
+                    <MicroBarChart data={data} color="#10b981" />
+                  </div>
                 </div>
               </div>
             </Card>
