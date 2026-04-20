@@ -22,10 +22,52 @@ export default function Dashboard() {
   }, []);
   
   return (
-    <div className="flex min-h-screen bg-zinc-950">
+    <div className="flex min-h-screen bg-zinc-950 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-20 right-20 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-20 left-20 w-80 h-80 bg-violet-500/5 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.2, 0.4, 0.2]
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+        />
+        <motion.div
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500/3 rounded-full blur-2xl"
+          animate={{
+            scale: [1, 1.5, 1],
+            opacity: [0.1, 0.3, 0.1]
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 4
+          }}
+        />
+      </div>
+
       <Sidebar />
-      
-      <main className="flex-1 p-6 overflow-auto">
+
+      <main className="flex-1 p-6 overflow-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -82,7 +124,7 @@ export default function Dashboard() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="lg:col-span-2"
             >
-              <Card title="Revenue Forecast">
+              <Card title="Revenue Forecast" hover>
                 <div className="h-[350px]">
                   <TimeSeriesChart 
                     data={data} 
@@ -120,7 +162,7 @@ export default function Dashboard() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="p-4">
+            <Card className="p-4" hover>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-indigo-600/20 rounded-lg flex items-center justify-center">
                   <Database className="w-5 h-5 text-indigo-400" />
@@ -135,7 +177,7 @@ export default function Dashboard() {
               </div>
             </Card>
 
-            <Card className="p-4">
+            <Card className="p-4" hover>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-violet-600/20 rounded-lg flex items-center justify-center">
                   <Clock className="w-5 h-5 text-violet-400" />
@@ -150,7 +192,7 @@ export default function Dashboard() {
               </div>
             </Card>
 
-            <Card className="p-4">
+            <Card className="p-4" hover>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-emerald-600/20 rounded-lg flex items-center justify-center">
                   <DollarSign className="w-5 h-5 text-emerald-400" />
