@@ -10,23 +10,34 @@ interface SkeletonProps {
 export function Skeleton({ className = '', animate = true }: SkeletonProps) {
   return (
     <div
-      className={`bg-zinc-800/50 rounded-lg ${className}`}
+      className={`bg-zinc-800/50 rounded-lg relative overflow-hidden ${className}`}
     >
       {animate && (
-        <motion.div
-          className="h-full w-full bg-gradient-to-r from-zinc-800/50 via-zinc-700/50 to-zinc-800/50 rounded-lg"
-          animate={{
-            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: 'easeInOut'
-          }}
-          style={{
-            backgroundSize: '200% 100%'
-          }}
-        />
+        <>
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-zinc-700/30 to-transparent rounded-lg"
+            animate={{
+              x: ['-100%', '100%']
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              repeatDelay: 0.5
+            }}
+          />
+          <motion.div
+            className="h-full w-full bg-gradient-to-r from-zinc-800/50 via-zinc-700/60 to-zinc-800/50 rounded-lg"
+            animate={{
+              opacity: [0.5, 0.8, 0.5]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: 'easeInOut'
+            }}
+          />
+        </>
       )}
     </div>
   );
