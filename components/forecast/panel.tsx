@@ -90,35 +90,75 @@ export function ForecastPanel() {
       </div>
       
       <div className="space-y-3">
-        <p className="text-xs text-zinc-500 mb-2">Select Model</p>
+        <motion.p
+          className="text-xs text-zinc-500 mb-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+        >
+          Select Model
+        </motion.p>
         <div className="grid grid-cols-2 gap-2">
-          {modelOptions.map((model) => {
+          {modelOptions.map((model, index) => {
             const Icon = model.icon;
             const isSelected = selectedModel === model.value;
             const modelResult = models.find(m => m.model === model.value);
             const error = modelResult?.metrics.rmse;
-            
+
             return (
               <motion.button
                 key={model.value}
-                whileHover={{ scale: 1.02 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: index * 0.1,
+                  duration: 0.3
+                }}
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: isSelected
+                    ? '0 0 20px rgba(99, 102, 241, 0.3)'
+                    : '0 0 15px rgba(63, 63, 70, 0.2)'
+                }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedModel(model.value)}
-                className={`p-3 rounded-lg text-left transition-all ${
-                  isSelected 
-                    ? 'bg-indigo-600/20 border-indigo-500 border' 
-                    : 'bg-zinc-800/30 border border-zinc-800 hover:bg-zinc-800/50'
+                className={`p-3 rounded-lg text-left transition-all relative overflow-hidden ${
+                  isSelected
+                    ? 'bg-indigo-600/20 border-indigo-500 border shadow-lg shadow-indigo-500/20'
+                    : 'bg-zinc-800/30 border border-zinc-800 hover:bg-zinc-800/50 hover:border-zinc-700'
                 }`}
               >
-                <div className="flex items-center gap-2 mb-1">
-                  <Icon className={`w-4 h-4 ${isSelected ? 'text-indigo-400' : 'text-zinc-500'}`} />
+                {/* Selection indicator animation */}
+                {isSelected && (
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-violet-500/10 rounded-lg"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                )}
+
+                <div className="flex items-center gap-2 mb-1 relative z-10">
+                  <motion.div
+                    animate={isSelected ? { rotate: [0, -10, 10, 0] } : {}}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Icon className={`w-4 h-4 ${isSelected ? 'text-indigo-400' : 'text-zinc-500'}`} />
+                  </motion.div>
                   <span className={`text-sm font-medium ${isSelected ? 'text-indigo-300' : 'text-zinc-300'}`}>
                     {model.label}
                   </span>
                 </div>
-                <p className="text-xs text-zinc-500 truncate">{model.description}</p>
+                <p className="text-xs text-zinc-500 truncate relative z-10">{model.description}</p>
                 {error !== undefined && (
-                  <p className="text-xs text-zinc-600 mt-1">RMSE: {error.toFixed(2)}</p>
+                  <motion.p
+                    className="text-xs text-zinc-600 mt-1 relative z-10"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    RMSE: {error.toFixed(2)}
+                  </motion.p>
                 )}
               </motion.button>
             );
@@ -126,24 +166,36 @@ export function ForecastPanel() {
         </div>
       </div>
       
-      <div className="flex gap-2 pt-2">
-        <Button 
-          onClick={handleRunForecast} 
+      <motion.div
+        className="flex gap-2 pt-2"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+      >
+        <Button
+          onClick={handleRunForecast}
           disabled={data.length === 0 || isLoading}
+          loading={isLoading}
           className="flex-1"
         >
-          <Play className="w-4 h-4 mr-2" />
-          Run
+          <motion.div
+            animate={isLoading ? { rotate: 360 } : {}}
+            transition={{ duration: 2, repeat: isLoading ? Infinity : 0, ease: "linear" }}
+          >
+            <Play className="w-4 h-4 mr-2" />
+          </motion.div>
+          {isLoading ? 'Running...' : 'Run'}
         </Button>
-        <Button 
-          variant="secondary" 
+        <Button
+          variant="secondary"
           onClick={handleCompare}
           disabled={data.length === 0 || isLoading}
+          loading={isLoading}
           className="flex-1"
         >
           Compare All
         </Button>
-      </div>
+      </motion.div>
       
       <AnimatePresence>
         {forecast && (
