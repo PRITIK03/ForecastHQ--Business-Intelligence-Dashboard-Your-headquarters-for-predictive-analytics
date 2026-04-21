@@ -1,5 +1,7 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { shallow } from 'zustand/shallow';
+import { useMemo } from 'react';
 import { DataPoint, ForecastResult, ForecastConfig, ModelType } from '@/types';
 import { runForecast, compareModels, getBestModel } from '@/lib/algorithms/forecast';
 import { generateSampleData, calculateMetrics } from '@/lib/data/generator';
@@ -34,50 +36,58 @@ export const useInsightStore = create<InsightStore>()(
       },
       isLoading: false,
       selectedModel: 'exponential-smoothing',
-      
+
       setData: (data) => set({ data }),
-      
+
       generateData: () => {
         set({ isLoading: true });
-        const data = generateSampleData('sales');
-        set({ data, isLoading: false });
+        // Use setTimeout to prevent synchronous state updates
+        setTimeout(() => {
+          const data = generateSampleData('sales');
+          set({ data, isLoading: false });
+        }, 0);
       },
       
       runForecast: (configOverride) => {
         const { data, config } = get();
         if (data.length === 0) return;
-        
+
         set({ isLoading: true });
-        
+
         const newConfig = { ...config, ...configOverride };
-        const result = runForecast(data, newConfig);
-        
-        set({ 
-          forecast: result, 
-          config: newConfig,
-          isLoading: false 
-        });
+
+        // Use setTimeout to prevent synchronous state updates
+        setTimeout(() => {
+          const result = runForecast(data, newConfig);
+          set({
+            forecast: result,
+            config: newConfig,
+            isLoading: false
+          });
+        }, 0);
       },
       
       compareAllModels: () => {
         const { data, config } = get();
         if (data.length === 0) return;
-        
+
         set({ isLoading: true });
-        
-        const models = compareModels(data, config);
-        const best = getBestModel(models);
-        
-        set({ 
-          models, 
-          forecast: best,
-          isLoading: false 
-        });
+
+        // Use setTimeout to prevent synchronous state updates
+        setTimeout(() => {
+          const models = compareModels(data, config);
+          const best = getBestModel(models);
+
+          set({
+            models,
+            forecast: best,
+            isLoading: false
+          });
+        }, 0);
       },
       
       setSelectedModel: (model) => {
         set({ selectedModel: model });
-        get().runForecast({ model });
       },
       
       setConfig: (configUpdate) => {
@@ -95,8 +105,10 @@ export const useInsightStore = create<InsightStore>()(
 );
 
 export function useDataMetrics() {
-  return useInsightStore((state) => {
-    if (state.data.length === 0) {
+  const data = useInsightStore((state) => state.data, shallow);
+
+  return useMemo(() => {
+    if (!data || data.length === 0) {
       return {
         total: 0,
         average: 0,
@@ -106,6 +118,6 @@ export function useDataMetrics() {
         growth: 0
       };
     }
-    return calculateMetrics(state.data);
-  });
+    return calculateMetrics(data);
+  }, [data]); // Shallow comparison should prevent unnecessary recalculations
 }

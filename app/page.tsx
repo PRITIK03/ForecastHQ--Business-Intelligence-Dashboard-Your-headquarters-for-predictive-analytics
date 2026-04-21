@@ -9,18 +9,20 @@ import { MicroBarChart } from '@/components/charts/micro-bar-chart';
 import { Card } from '@/components/ui/card';
 import { KPICardSkeleton, ChartSkeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Sparkles, Database, Clock, DollarSign } from 'lucide-react';
 
 export default function Dashboard() {
   const { data, forecast, generateData, isLoading } = useInsightStore();
   const metrics = useDataMetrics();
+  const hasGeneratedData = useRef(false);
 
   useEffect(() => {
-    if (data.length === 0) {
+    if (data.length === 0 && !hasGeneratedData.current) {
+      hasGeneratedData.current = true;
       generateData();
     }
-  }, []);
+  }, [data.length, generateData]);
   
   return (
     <div className="flex min-h-screen bg-zinc-950 relative overflow-hidden">

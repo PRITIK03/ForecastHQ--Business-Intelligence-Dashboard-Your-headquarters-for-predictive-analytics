@@ -13,7 +13,6 @@ import {
   ComposedChart
 } from 'recharts';
 import { useMemo } from 'react';
-import { motion } from 'framer-motion';
 
 interface TimeSeriesChartProps {
   data: DataPoint[];
@@ -77,11 +76,7 @@ export function TimeSeriesChart({
   };
   
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div className="w-full h-full">
       <ResponsiveContainer width="100%" height={height}>
         <ComposedChart data={chartData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
           <defs>
@@ -89,26 +84,6 @@ export function TimeSeriesChart({
               <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
               <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
             </linearGradient>
-            <motion.linearGradient
-              id="animatedLineGradient"
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="0%"
-              animate={{
-                x1: ["0%", "100%"],
-                x2: ["100%", "200%"]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            >
-              <stop offset="0%" stopColor="#6366f1" />
-              <stop offset="50%" stopColor="#8b5cf6" />
-              <stop offset="100%" stopColor="#6366f1" />
-            </motion.linearGradient>
           </defs>
           <CartesianGrid
             strokeDasharray="3 3"
@@ -198,6 +173,6 @@ export function TimeSeriesChart({
           )}
         </ComposedChart>
       </ResponsiveContainer>
-    </motion.div>
+    </div>
   );
 }
