@@ -185,8 +185,8 @@ export default function AnalyticsPage() {
           className="absolute bottom-10 left-10 w-64 h-64 bg-gradient-to-tl from-emerald-500/8 to-cyan-500/6 rounded-full blur-3xl"
           animate={{ scale: [1.1, 0.9, 1.1], opacity: [0.2, 0.5, 0.2] }}
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
-      </div>
+         />
+
 
       <Sidebar />
 
@@ -355,7 +355,7 @@ export default function AnalyticsPage() {
                             <p className="text-3xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-300 bg-clip-text text-transparent">
                               {card.value}
                             </p>
-                          </div>
+
 
                           {/* Real micro graph */}
                           <motion.div
