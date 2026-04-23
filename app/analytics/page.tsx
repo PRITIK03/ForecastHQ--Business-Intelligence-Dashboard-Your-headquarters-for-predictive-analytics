@@ -289,8 +289,8 @@ export default function AnalyticsPage() {
                   <KPICardSkeleton />
                 </motion.div>
               ))
-            ) : <>
-              {cards.map((card, index) => (
+            ) : (
+              cards.map((card, index) => (
                 <motion.div
                   key={card.title}
                   initial={{ opacity: 0, y: 30, scale: 0.9 }}
@@ -307,7 +307,7 @@ export default function AnalyticsPage() {
                     rotateY: 2,
                     transition: { duration: 0.3 }
                   }}
-                  className="group"
+                  className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${card.gradient} p-[1px] transition-all duration-300 hover:shadow-2xl hover:${card.bgGlow}`}
                 >
                   <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${card.gradient} p-[1px] transition-all duration-300 hover:shadow-2xl hover:shadow-lg`}>
                     <div className="relative bg-slate-900/95 backdrop-blur-xl rounded-2xl p-6 h-full">
@@ -396,281 +396,10 @@ export default function AnalyticsPage() {
                               }}
                             />
                           ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))`n            </>`n                        )}
-           </motion.div>
-
-           {/* Chart Type Selector */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="flex flex-wrap gap-2"
-          >
-            {[
-              { type: 'area', icon: BarChart3, label: 'Area Chart' },
-              { type: 'pie', icon: PieChartIcon, label: 'Pie Chart' },
-              { type: 'bar', icon: BarChart3, label: 'Bar Chart' },
-              { type: 'line', icon: LineChartIcon, label: 'Line Chart' },
-            ].map((chart) => (
-              <Button
-                key={chart.type}
-                variant={selectedChart === chart.type ? 'primary' : 'ghost'}
-                size="sm"
-                onClick={() => setSelectedChart(chart.type as any)}
-                className={selectedChart === chart.type ? 'bg-indigo-600 hover:bg-indigo-500' : ''}
-              >
-                <chart.icon className="w-4 h-4 mr-2" />
-                {chart.label}
-              </Button>
-            ))}
-          </motion.div>
-
-          {/* Main Chart */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.7 }}
-            className="grid grid-cols-1 lg:grid-cols-3 gap-6"
-          >
-            <motion.div
-              className="lg:col-span-2"
-              whileHover={{ scale: 1.01 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-[1px] shadow-2xl shadow-indigo-500/20">
-                <div className="bg-slate-900/95 backdrop-blur-xl rounded-2xl p-6">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 p-2.5">
-                      <BarChart3 className="w-5 h-5 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
-                      Data Visualization
-                    </h3>
-                  </div>
-                  <div className="h-80">
-                    {data.length === 0 || isLoading ? (
-                      <ChartSkeleton />
-            ) :
-                      <ResponsiveContainer width="100%" height="100%">
-                        {selectedChart === 'area' && (
-                          <AreaChart data={areaData}>
-                            <defs>
-                              <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                                <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
-                              </linearGradient>
-                            </defs>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                            <XAxis dataKey="date" stroke="#9ca3af" />
-                            <YAxis stroke="#9ca3af" />
-                            <Tooltip
-                              contentStyle={{
-                                backgroundColor: '#18181b',
-                                border: '1px solid #374151',
-                                borderRadius: '8px'
-                              }}
-                            />
-                            <Area
-                              type="monotone"
-                              dataKey="value"
-                              stroke="#6366f1"
-                              fillOpacity={1}
-                              fill="url(#areaGradient)"
-                              strokeWidth={2}
-                            />
-                            <Area
-                              type="monotone"
-                              dataKey="trend"
-                              stroke="#8b5cf6"
-                              fillOpacity={0}
-                              strokeWidth={2}
-                              strokeDasharray="5 5"
-                            />
-                          </AreaChart>
-                        )}
-
-                        {selectedChart === 'pie' && (
-                          <PieChart>
-                            <Pie
-                              data={pieData}
-                              cx="50%"
-                              cy="50%"
-                              labelLine={false}
-                              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                              outerRadius={80}
-                              fill="#8884d8"
-                              dataKey="value"
-                            >
-                              {pieData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.fill} />
-                              ))}
-                            </Pie>
-                            <Tooltip />
-                          </PieChart>
-                        )}
-
-                        {selectedChart === 'bar' && (
-                          <BarChart data={barData}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                            <XAxis dataKey="name" stroke="#9ca3af" />
-                            <YAxis stroke="#9ca3af" />
-                            <Tooltip
-                              contentStyle={{
-                                backgroundColor: '#18181b',
-                                border: '1px solid #374151',
-                                borderRadius: '8px'
-                              }}
-                            />
-                            <Bar dataKey="revenue" fill="#6366f1" radius={[4, 4, 0, 0]} />
-                            <Bar dataKey="forecast" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
-                          </BarChart>
-                        )}
-
-                        {selectedChart === 'line' && (
-                          <LineChart data={lineData}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                            <XAxis dataKey="date" stroke="#9ca3af" />
-                            <YAxis stroke="#9ca3af" />
-                            <Tooltip
-                              contentStyle={{
-                                backgroundColor: '#18181b',
-                                border: '1px solid #374151',
-                                borderRadius: '8px'
-                              }}
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey="actual"
-                              stroke="#6366f1"
-                              strokeWidth={3}
-                              dot={{ fill: '#6366f1', strokeWidth: 2, r: 4 }}
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey="predicted"
-                              stroke="#8b5cf6"
-                              strokeWidth={2}
-                              strokeDasharray="5 5"
-                              dot={{ fill: '#8b5cf6', strokeWidth: 2, r: 3 }}
-                            />
-                          </LineChart>
-                        )}
-                      </ResponsiveContainer>
-                    )}
-                  </div>
                 </div>
               </div>
-            </motion.div>
-
-            {/* Side Panel with Advanced Visualizations */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.8 }}
-              className="space-y-4"
-            >
-              {/* Vibrant Gauge Chart */}
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-              >
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 p-[1px] shadow-lg shadow-emerald-500/20">
-                  <div className="bg-slate-900/95 backdrop-blur-xl rounded-2xl p-6">
-                    <GaugeChart
-                      value={Math.abs(metrics.growth)}
-                      max={50}
-                      title="Growth Performance"
-                      color={metrics.growth >= 0 ? '#10b981' : '#ef4444'}
-                      size={200}
-                    />
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Colorful Donut Chart */}
-              <motion.div
-                whileHover={{ scale: 1.02, rotateY: 2 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 p-[1px] shadow-lg shadow-purple-500/20">
-                  <div className="bg-slate-900/95 backdrop-blur-xl rounded-2xl p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 p-2">
-                        <BarChart3 className="w-4 h-4 text-white" />
-                      </div>
-                      <h4 className="text-sm font-bold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
-                        Data Distribution
-                      </h4>
-                    </div>
-                    <DonutChart
-                      data={[
-                        { name: 'High', value: displayData.filter(d => d.value > metrics.average * 1.2).length, color: '#ff6b6b' },
-                        { name: 'Medium', value: displayData.filter(d => d.value >= metrics.average * 0.8 && d.value <= metrics.average * 1.2).length, color: '#4ecdc4' },
-                        { name: 'Low', value: displayData.filter(d => d.value < metrics.average * 0.8).length, color: '#45b7d1' },
-                      ]}
-                      height={160}
-                      innerRadius={30}
-                      outerRadius={55}
-                    />
-
-                    {/* Distribution stats */}
-                    <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
-                      <div className="text-center">
-                        <div className="w-3 h-3 rounded-full bg-red-500 mx-auto mb-1"></div>
-                        <div className="text-slate-300 font-medium">
-                          {displayData.filter(d => d.value > metrics.average * 1.2).length}
-                        </div>
-                        <div className="text-slate-500">High</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="w-3 h-3 rounded-full bg-teal-500 mx-auto mb-1"></div>
-                        <div className="text-slate-300 font-medium">
-                          {displayData.filter(d => d.value >= metrics.average * 0.8 && d.value <= metrics.average * 1.2).length}
-                        </div>
-                        <div className="text-slate-500">Medium</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="w-3 h-3 rounded-full bg-blue-500 mx-auto mb-1"></div>
-                        <div className="text-slate-300 font-medium">
-                          {displayData.filter(d => d.value < metrics.average * 0.8).length}
-                        </div>
-                        <div className="text-slate-500">Low</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Real-time Status */}
-              {realTimeMode && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                >
-                  <Card className="bg-gradient-to-br from-green-900/20 to-emerald-900/20 backdrop-blur-xl border-green-700/50">
-                    <div className="p-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <motion.div
-                          animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="w-2 h-2 bg-green-400 rounded-full"
-                        />
-                        <span className="text-sm font-medium text-green-400">Live Data</span>
-                      </div>
-                      <p className="text-xs text-zinc-400">
-                        Updating every 2 seconds
-                      </p>
-                      <div className="mt-2 text-xs text-zinc-500">
-                        Latest: ${displayData[displayData.length - 1]?.value.toFixed(0)}
-                      </div>
-                    </div>
-                  </Card>
+              </div>
+            </Card>
                 </motion.div>
               )}
 
@@ -692,9 +421,6 @@ export default function AnalyticsPage() {
                       <span className="text-sm font-medium text-white">{displayData.length}</span>
                     </div>
                   </div>
-                </div>
-              </div>
-              </div>
               </div>
             </Card>
             </motion.div>
