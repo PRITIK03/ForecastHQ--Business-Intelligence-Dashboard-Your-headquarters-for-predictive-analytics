@@ -92,6 +92,45 @@ export default function AnalyticsPage() {
     predicted: point.value * 1.05,
   }));
 
+  const cards = [
+    {
+      title: "Total Revenue",
+      value: `$${metrics.total.toLocaleString()}`,
+      change: metrics.growth,
+      icon: DollarSign,
+      gradient: "from-pink-500 via-red-500 to-rose-500",
+      bgGlow: "shadow-pink-500/30",
+      chartColor: "#ff6b6b"
+    },
+    {
+      title: "Average Revenue",
+      value: `$${metrics.average.toFixed(0)}`,
+      change: metrics.growth / 2,
+      icon: TrendingUp,
+      gradient: "from-cyan-500 via-blue-500 to-indigo-500",
+      bgGlow: "shadow-cyan-500/30",
+      chartColor: "#4ecdc4"
+    },
+    {
+      title: "Growth Rate",
+      value: `${metrics.growth.toFixed(1)}%`,
+      change: metrics.growth > 0 ? 5 : -2,
+      icon: Activity,
+      gradient: "from-purple-500 via-violet-500 to-indigo-500",
+      bgGlow: "shadow-purple-500/30",
+      chartColor: "#a855f7"
+    },
+    {
+      title: "Data Points",
+      value: data.length.toString(),
+      change: 2.1,
+      icon: BarChart3,
+      gradient: "from-orange-500 via-amber-500 to-yellow-500",
+      bgGlow: "shadow-orange-500/30",
+      chartColor: "#f59e0b"
+    }
+  ];
+
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950 relative overflow-hidden">
       {/* Vibrant animated background */}
@@ -250,46 +289,8 @@ export default function AnalyticsPage() {
                   <KPICardSkeleton />
                 </motion.div>
               ))
-            ) : ( (
-              // Enhanced KPI cards with vibrant colors
-              [
-                {
-                  title: "Total Revenue",
-                  value: `$${metrics.total.toLocaleString()}`,
-                  change: metrics.growth,
-                  icon: DollarSign,
-                  gradient: "from-pink-500 via-red-500 to-rose-500",
-                  bgGlow: "shadow-pink-500/30",
-                  chartColor: "#ff6b6b"
-                },
-                {
-                  title: "Average Revenue",
-                  value: `$${metrics.average.toFixed(0)}`,
-                  change: metrics.growth / 2,
-                  icon: TrendingUp,
-                  gradient: "from-cyan-500 via-blue-500 to-indigo-500",
-                  bgGlow: "shadow-cyan-500/30",
-                  chartColor: "#4ecdc4"
-                },
-                {
-                  title: "Growth Rate",
-                  value: `${metrics.growth.toFixed(1)}%`,
-                  change: metrics.growth > 0 ? 5 : -2,
-                  icon: Activity,
-                  gradient: "from-purple-500 via-violet-500 to-indigo-500",
-                  bgGlow: "shadow-purple-500/30",
-                  chartColor: "#a855f7"
-                },
-                {
-                  title: "Data Points",
-                  value: data.length.toString(),
-                  change: 2.1,
-                  icon: BarChart3,
-                  gradient: "from-orange-500 via-amber-500 to-yellow-500",
-                  bgGlow: "shadow-orange-500/30",
-                  chartColor: "#f59e0b"
-                }
-              ].map((card, index) => (
+            ) : <>
+              {cards.map((card, index) => (
                 <motion.div
                   key={card.title}
                   initial={{ opacity: 0, y: 30, scale: 0.9 }}
@@ -693,6 +694,8 @@ export default function AnalyticsPage() {
                     </div>
                   </div>
                 </div>
+              </div>
+              </div>
               </div>
             </Card>
             </motion.div>
