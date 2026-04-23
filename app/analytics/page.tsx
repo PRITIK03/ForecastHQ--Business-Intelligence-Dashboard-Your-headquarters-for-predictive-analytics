@@ -250,7 +250,7 @@ export default function AnalyticsPage() {
                   <KPICardSkeleton />
                 </motion.div>
               ))
-            ) : (
+            ) : ( (
               // Enhanced KPI cards with vibrant colors
               [
                 {
@@ -401,7 +401,7 @@ export default function AnalyticsPage() {
                   </div>
                 </motion.div>
               ))
-            }
+            )}
            </motion.div>
 
            {/* Chart Type Selector */}
