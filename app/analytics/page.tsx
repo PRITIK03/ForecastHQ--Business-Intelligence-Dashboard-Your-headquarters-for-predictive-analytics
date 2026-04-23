@@ -693,7 +693,8 @@ export default function AnalyticsPage() {
                     </div>
                   </div>
                 </div>
-              </Card>
+              </div>
+            </Card>
             </motion.div>
           </motion.div>
         </motion.div>

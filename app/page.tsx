@@ -6,6 +6,7 @@ import { KPICard } from '@/components/dashboard/kpi-card';
 import { ForecastPanel } from '@/components/forecast/panel';
 import { TimeSeriesChart } from '@/components/charts/time-series';
 import { MicroBarChart } from '@/components/charts/micro-bar-chart';
+import { MicroChart } from '@/components/charts/micro-chart';
 import { Card } from '@/components/ui/card';
 import { KPICardSkeleton, ChartSkeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';

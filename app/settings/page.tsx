@@ -264,7 +264,7 @@ export default function SettingsPage() {
                             ].map((option) => (
                               <button
                                 key={option.value}
-                                onClick={() => setTheme(option.value as any)}
+                                onClick={() => setTheme(option.value)}
                                 className={`p-4 rounded-lg border transition-all ${
                                   theme === option.value
                                     ? 'border-indigo-500 bg-indigo-600/20 text-indigo-300'
