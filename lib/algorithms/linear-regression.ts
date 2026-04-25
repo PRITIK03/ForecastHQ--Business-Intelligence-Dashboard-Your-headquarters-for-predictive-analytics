@@ -126,16 +126,35 @@ function fitRegression(features: number[][], data: number[]): RegressionResult {
   const X = new Matrix(features);
   const y = Matrix.columnVector(data);
 
-  const Xt = X.transpose();
-  const XtX = Xt.mmul(X);
-  const XtXInv = XtX.inverse();
-  const XtXInvXt = XtXInv.mmul(Xt);
-  const beta = XtXInvXt.mmul(y);
+  try {
+    const Xt = X.transpose();
+    const XtX = Xt.mmul(X);
+    const XtXInv = XtX.pseudoInverse ? XtX.pseudoInverse() : XtX.inverse();
+    const XtXInvXt = XtXInv.mmul(Xt);
+    const beta = XtXInvXt.mmul(y);
 
-  return {
-    coefficients: beta.subMatrix(1, beta.rows - 1, 0, 0).to1DArray(),
-    intercept: beta.get(0, 0)
-  };
+    return {
+      coefficients: beta.subMatrix(1, beta.rows - 1, 0, 0).to1DArray(),
+      intercept: beta.get(0, 0)
+    };
+  } catch (error) {
+    // Fallback to simple linear regression if matrix inversion fails
+    console.warn('Matrix inversion failed, using fallback method');
+    const n = features.length;
+    const xValues = features.map(row => row[1]); // Use first feature (time)
+    const sumX = xValues.reduce((a, b) => a + b, 0);
+    const sumY = data.reduce((a, b) => a + b, 0);
+    const sumXY = xValues.reduce((sum, x, i) => sum + x * data[i], 0);
+    const sumX2 = xValues.reduce((sum, x) => sum + x * x, 0);
+
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+
+    return {
+      coefficients: [slope],
+      intercept
+    };
+  }
 }
 
 function varianceX(features: number[][]): number {

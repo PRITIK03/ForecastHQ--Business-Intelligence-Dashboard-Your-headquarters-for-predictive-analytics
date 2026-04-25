@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, ReactNode, useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'default' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   children: ReactNode;
   loading?: boolean;
@@ -28,7 +28,9 @@ export function Button({
     primary: 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/30',
     secondary: 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 hover:border-zinc-600',
     ghost: 'bg-transparent hover:bg-zinc-800/50 text-zinc-300 hover:text-zinc-100',
-    danger: 'bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/20 hover:shadow-xl hover:shadow-red-500/30'
+    danger: 'bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/20 hover:shadow-xl hover:shadow-red-500/30',
+    default: 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/30',
+    outline: 'bg-transparent hover:bg-zinc-800/50 text-zinc-300 hover:text-zinc-100 border border-zinc-600 hover:border-zinc-500'
   };
 
   const sizes = {

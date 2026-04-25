@@ -398,8 +398,6 @@ export default function AnalyticsPage() {
                   </div>
                 </motion.div>
               ))
-
-              {/* Quick Stats */}
             )}
           </motion.div>
 

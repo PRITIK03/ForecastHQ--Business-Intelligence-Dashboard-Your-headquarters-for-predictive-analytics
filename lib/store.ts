@@ -108,7 +108,7 @@ export function useDataMetrics() {
   const data = useInsightStore((state) => state.data, shallow);
 
   return useMemo(() => {
-    if (!data || data.length === 0) {
+    if (!Array.isArray(data) || data.length === 0) {
       return {
         total: 0,
         average: 0,
