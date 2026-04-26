@@ -34,7 +34,8 @@ export default function AnalyticsPage() {
   // Real-time data simulation
   useEffect(() => {
     if (!realTimeMode) {
-      setRealTimeData(data);
+      // Use setTimeout to avoid synchronous state update in effect
+      setTimeout(() => setRealTimeData(data), 0);
       return;
     }
 
