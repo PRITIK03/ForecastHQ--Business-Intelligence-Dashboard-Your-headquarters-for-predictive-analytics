@@ -2,7 +2,7 @@
 # Node.js Project Dependencies
 
 ## Runtime Requirements
-- Node.js 20+
+- Node.js 20++
 - npm or yarn
 
 ## Core Dependencies (from package.json)
