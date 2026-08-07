@@ -623,14 +623,6 @@ SOFTWARE.
 - Hyndman, R. J., & Athanasopoulos, G. (2018). *Forecasting: Principles and Practice*
 - Chatfield, C. (2004). *The Analysis of Time Series*
 
----
-
-## 📞 Support
-
-- **Documentation**: [docs.insightflow.dev](https://docs.insightflow.dev)
-- **Issues**: [GitHub Issues](https://github.com/your-org/insightflow/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-org/insightflow/discussions)
-- **Email**: support@insightflow.dev
 
 ---
 
